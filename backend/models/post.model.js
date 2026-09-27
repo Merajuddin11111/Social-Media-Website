@@ -1,41 +1,11 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-const postSchema = new mongoose.Schema({
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
-    mediaType: {
-        type: String,
-        enum: ["image", "video"],
-        required: true
-    },
-    media: {
-        type: String,
-        required: true
-    },
-    caption:{
-        type:String
-    },
-    likes:[
-        {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        }
-    ],
-    comments:[
-        {
-        author:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"},
-        message:{
-            type:String
-        }
-        }
-    ]
+const Post = sequelize.define("Post", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    mediaType: { type: DataTypes.ENUM("image", "video"), allowNull: false },
+    media: { type: DataTypes.STRING, allowNull: false },
+    caption: { type: DataTypes.TEXT },
+}, { tableName: "posts", timestamps: true });
 
-}, { timestamps: true })
-
-const Post = mongoose.model("Post",postSchema)
-export default Post
+export default Post;

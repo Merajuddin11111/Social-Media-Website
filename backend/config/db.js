@@ -1,12 +1,14 @@
-import mongoose from "mongoose";
+import { Sequelize } from "sequelize";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const connectDb=async ()=>{
-    try {
-        await mongoose.connect(process.env.MONGODB_URL)
-        console.log("db connected")
-    } catch (error) {
-         console.log("db error")
-    }
-}
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-export default connectDb
+const sequelize = new Sequelize({
+    dialect: "sqlite",
+    storage: path.join(__dirname, "..", "database.db"),
+    logging: false,
+});
+
+export default sequelize;

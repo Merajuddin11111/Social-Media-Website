@@ -1,34 +1,10 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-const storySchema=new mongoose.Schema({
-    author: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true
-        },
-    mediaType:{
-        type:String,
-        enum:["image","video"],
-        required:true
-    },
-    media:{
-        type:String,
-        required:true
-    },
-    viewers:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true
-        }
-    ]
-    ,
-    createdAt:{
-        type:Date,
-        default:Date.now(),
-        expires:86400
-    }
-},{timestamps:true})
+const Story = sequelize.define("Story", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    mediaType: { type: DataTypes.ENUM("image", "video"), allowNull: false },
+    media: { type: DataTypes.STRING, allowNull: false },
+}, { tableName: "stories", timestamps: true });
 
-const Story=mongoose.model("Story",storySchema)
-export default Story
+export default Story;
